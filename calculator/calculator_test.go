@@ -2,24 +2,54 @@ package calculator
 
 import "testing"
 
-// TestDiscountApplied - check if discount correctly applied
-func TestDiscountApplied(t *testing.T) {
-
-	calculator := NewDiscountCalculator(100, 20)
-	amount := calculator.Calculate(150)
-
-	if 130 != amount {
-		t.Fail()
+// TestDiscountCalculator - table driven testing approach
+func TestDiscountCalculator(t *testing.T) {
+	type testCase struct {
+		minimumPurchaseAmount int
+		purchaseAmount        int
+		discount              int
+		expectedAmount        int
 	}
-}
 
-// TetDiscountNotApplied - check if discount not applied
-func TestDiscountNotApplied(t *testing.T) {
+	testCases := []testCase{
+		{
+			minimumPurchaseAmount: 100,
+			purchaseAmount:        150,
+			discount:              20,
+			expectedAmount:        130,
+		},
+		{
+			minimumPurchaseAmount: 100,
+			purchaseAmount:        200,
+			discount:              20,
+			expectedAmount:        180,
+		},
+		{
+			minimumPurchaseAmount: 100,
+			purchaseAmount:        350,
+			discount:              20,
+			expectedAmount:        330,
+		},
+		{
+			minimumPurchaseAmount: 100,
+			purchaseAmount:        50,
+			discount:              20,
+			expectedAmount:        50,
+		},
+		{
+			minimumPurchaseAmount: 100,
+			purchaseAmount:        50,
+			discount:              0,
+			expectedAmount:        50,
+		},
+	}
 
-	calculator := NewDiscountCalculator(100, 20)
-	amount := calculator.Calculate(50)
+	for _, tc := range testCases {
+		calculator := NewDiscountCalculator(tc.minimumPurchaseAmount, tc.discount)
+		amount := calculator.Calculate(tc.purchaseAmount)
 
-	if 50 != amount {
-		t.Fail()
+		if amount != tc.expectedAmount {
+			t.Errorf("expected %v, got %v", tc.expectedAmount, amount)
+		}
 	}
 }
