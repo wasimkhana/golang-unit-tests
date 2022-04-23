@@ -1,2 +1,2 @@
-# golang-trainee
-This repo contain trainee's solutions to the assigned tasks.
+# golang-unit-tests
+Approach to unit test golang code.
